@@ -162,6 +162,7 @@ class ConfigManager:
         "log_url": "https://example.com/",
         "log_url_prefix": "/logs",
         "mongo_uri": None,
+        "database_name": "modmail_bot",
         "database_type": "mongodb",
         "connection_uri": None,  # replace mongo uri in the future
         "owners": None,

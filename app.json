@@ -23,6 +23,10 @@
             "description": "The connection URI for your database.",
             "required": true
         },
+        "DATABASE_NAME": {
+            "description": "The name of your database.",
+            "required": true
+        },
         "DATABASE_TYPE": {
             "description": "The type of your database. There is only one supported database at the moment - MongoDB (default).",
             "required": false

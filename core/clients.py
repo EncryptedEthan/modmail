@@ -367,6 +367,7 @@ class ApiClient:
 class MongoDBClient(ApiClient):
     def __init__(self, bot):
         mongo_uri = bot.config["connection_uri"]
+
         if mongo_uri is None:
             mongo_uri = bot.config["mongo_uri"]
             if mongo_uri is not None:
@@ -377,9 +378,8 @@ class MongoDBClient(ApiClient):
             else:
                 logger.critical("A Mongo URI is necessary for the bot to function.")
                 raise RuntimeError
-
         try:
-            db = AsyncIOMotorClient(mongo_uri).modmail_bot
+            db = AsyncIOMotorClient(mongo_uri)[bot.config["database_name"]]
         except ConfigurationError as e:
             logger.critical(
                 "Your MongoDB CONNECTION_URI might be copied wrong, try re-copying from the source again. "
@@ -420,6 +420,7 @@ class MongoDBClient(ApiClient):
             logger.critical(message)
             if "CERTIFICATE_VERIFY_FAILED" in message and ssl_retry:
                 mongo_uri = self.bot.config["connection_uri"]
+
                 if mongo_uri is None:
                     mongo_uri = self.bot.config["mongo_uri"]
                 for _ in range(3):
@@ -431,7 +432,9 @@ class MongoDBClient(ApiClient):
                     'run "Certificate.command" on MacOS, '
                     'and check certifi is up to date "pip3 install --upgrade certifi".'
                 )
-                self.db = AsyncIOMotorClient(mongo_uri, tlsAllowInvalidCertificates=True).modmail_bot
+                self.db = AsyncIOMotorClient(mongo_uri, tlsAllowInvalidCertificates=True)[
+                    self.bot.config["database_name"]
+                ]
                 return await self.validate_database_connection(ssl_retry=False)
             if "ServerSelectionTimeoutError" in message:
                 logger.critical(
