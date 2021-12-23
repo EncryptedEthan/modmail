@@ -436,9 +436,7 @@ class Thread:
             prefix = self.bot.config["log_url_prefix"].strip("/")
             if prefix == "NONE":
                 prefix = ""
-            log_url = (
-                f"{self.bot.config['log_url'].strip('/')}{'/' + prefix if prefix else ''}/{log_data['key']}"
-            )
+            log_url = f"{self.bot.config['log_url'].strip('/')}{'/' + prefix if prefix else ''}/{log_data['key']}?database={self.bot.config['database_name']}"
 
             if log_data["title"]:
                 sneak_peak = log_data["title"]
